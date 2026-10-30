@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*.log
+.env
+.env.*
+outputs/
+checkpoints/
+wandb/
+models/
+data/

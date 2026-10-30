@@ -1,0 +1,39 @@
+# Loaded by verl (Hydra); the two scoring services read reward_service only.
+defaults:
+  - ppo_trainer
+  - _self_
+
+hydra:
+  searchpath:
+    - pkg://verl.trainer.config
+
+algorithm:
+  rollout_correction: null
+
+trainer:
+  dcrl:
+    enabled: true
+    alpha: 0.0
+    kl_coef: 0.001
+    clip_ratio: 0.2
+    kl_chunk_size: 32
+
+reward_service:
+  comet_model: ./models/wmt23-cometkiwi-da-xl/checkpoints/model.ckpt
+  lid_model: ./models/glotLID/model_v3.bin
+  comet_batch_size: 16
+  comet_gpus: 1
+  kiwi_weight: 0.5
+  metricx_url: http://localhost:8002
+  timeout: 600
+  host: localhost
+  port: 8001
+  metricx:
+    model_path: ./models/metricx-24-hybrid-xl-v2p6-bfloat16
+    tokenizer_path: ./models/metricx-24-hybrid-xl-v2p6-bfloat16/mt5-xl-tokenizer
+    metricx_repo: ./third_party/metricx
+    device: cuda:0
+    max_length: 1536
+    batch_size: 16
+    host: localhost
+    port: 8002
