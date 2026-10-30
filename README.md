@@ -42,33 +42,6 @@ For each source sentence, DCRL constructs a retrieval-augmented prompt and a bas
 4. Evaluate the same candidate tokens under both input conditions.
 5. Update the shared policy using the weighted joint objective.
 
-The training objective is:
-
-\[
-\mathcal{L}_{\mathrm{DCRL}}
-=
-\alpha \mathcal{L}_{R}
-+
-(1-\alpha)\mathcal{L}_{B},
-\]
-
-where each view-specific loss includes a clipped policy loss and a cross-view KL term.
-
-Both policy ratios use the old retrieval-view policy probabilities as their denominator. The KL terms are computed over the vocabulary at retrieval-sampled prefixes, with different stop-gradient directions for the two branches.
-
-### Training Reward
-
-The current implementation combines COMETKiwi and normalized reference-free MetricX:
-
-\[
-Q = \mathrm{COMETKiwi} + \left(1-\frac{\mathrm{MetricX}}{25}\right).
-\]
-
-Valid candidates receive \(1+Q\); invalid candidates receive \(-1\). Validity checks include empty output, response truncation, source copying, incorrect output language, and nonpositive COMETKiwi scores.
-
-The executable reward definition is in `dcrl/reward/formula.py`. The current implementation uses the sum above; the retained `kiwi_weight` configuration field does not alter this calculation.
-
-Groups containing no valid candidates are excluded from both policy and KL losses.
 
 ## Environment Setup
 
